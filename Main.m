@@ -109,9 +109,20 @@ t_End
 %% Тест моделирования системы неканонического вида, дифференцирование по tau
 % x_t=x_0;
 % i=1;
+% c=1e-1;
+% c=0.5;
+% % c=0;
 % for tau=0:dtau:tau_End
+%     y_t=YTrans(x_t(i,:));
+%     
 %     U=Control(tau);
-%     u=U(1,1);
+%     % u=U(1,1);
+%     y_tau=U(4:6,1);
+%     f_t=fKan(y_t);
+%     g_t=gKan(y_t);
+%     
+%     u=(-f_t+U(7,1) - 3*c*(y_t(3) - y_tau(3)) - 3*c^2*(y_t(2) - y_tau(2)) - c^3*(y_t(1) - y_tau(1)))/g_t;
+%     
 %     x_t(i+1,1)=x_t(i,1)+dtau*(-x_t(i,2));
 %     x_t(i+1,2)=x_t(i,2)+dtau*(x_t(i,2)-k2(x_t(i,3))/k1(x_t(i,3)) * x_t(i,2)^2/x_t(i,1)^2 );
 %     x_t(i+1,3)=x_t(i,3)+dtau*u;
@@ -120,25 +131,29 @@ t_End
 % 
 % disp(x_t(end,:));
 % disp(U(4:6,1));
-%% Моделирование исходной системы в реальном времени t
+% %% Моделирование исходной системы в реальном времени t
 x_r=x_0; tau=t_0;
 i=1;
+c=1e-1;
+% c=0.5;
+% c=0;
 for t=t_0:h_t:t_End
     y_r=YTrans(x_r(i,:));
     
     U=Control(tau);
-    v=U(1,1);
-    f_tau=U(2,1);
-    g_tau=U(3,1);
+    u1(i)=U(1,1);
+    % v=U(1,1);
     y_tau=U(4:6,1);
     
     f_r=fKan(y_r);
     g_r=gKan(y_r);
     
-    v=(-f_r + U(7,1) - 0.3*(y_r(3) - y_tau(3)) - 0.03*(y_r(2) - y_tau(2)) - 0.001*(y_r(1) - y_tau(1)) )/g_r;
+    v=(-f_r+U(7,1) - 3*c*(y_r(3) - y_tau(3)) - 3*c^2*(y_r(2) - y_tau(2)) - c^3*(y_r(1) - y_tau(1)))/g_r;
+    u2(i)=v;
     
     T=InvStateDiff(y_tau);
-    h_tau = h_t / s([y_tau(1) -y_tau(2) T]);
+    % h_tau = h_t / s([y_tau(1) -y_tau(2) T]);
+    h_tau = h_t / s(x_r(i,:));
     
     x_r(i+1,1)=x_r(i,1)+(-k1(x_r(i,3))*x_r(i,1)^2)*h_t;
     x_r(i+1,2)=x_r(i,2)+( k1(x_r(i,3))*x_r(i,1)^2 - k2(x_r(i,3))*x_r(i,2) )*h_t;
@@ -149,3 +164,8 @@ end
 
 disp(x_r(end,:));
 disp(U(4:6,1));
+
+% t=t_0:h_t:t_End;
+% plot(t,u1,t,u2);
+% hold on
+% grid on
