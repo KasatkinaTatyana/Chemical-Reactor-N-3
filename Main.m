@@ -137,11 +137,13 @@ i=1;
 c=1e-1;
 % c=0.5;
 % c=0;
+y_tau=y_0; h_tau=0;
+
 for t=t_0:h_t:t_End
     y_r=YTrans(x_r(i,:));
     
-    U=Control(tau);
-    u1(i)=U(1,1);
+    U=Control(y_tau(1), tau - h_tau, tau);
+    % u1(i)=U(1,1);
     % v=U(1,1);
     y_tau=U(4:6,1);
     
@@ -149,7 +151,7 @@ for t=t_0:h_t:t_End
     g_r=gKan(y_r);
     
     v=(-f_r+U(7,1) - 3*c*(y_r(3) - y_tau(3)) - 3*c^2*(y_r(2) - y_tau(2)) - c^3*(y_r(1) - y_tau(1)))/g_r;
-    u2(i)=v;
+    % u2(i)=v;
     
     T=InvStateDiff(y_tau);
     % h_tau = h_t / s([y_tau(1) -y_tau(2) T]);
