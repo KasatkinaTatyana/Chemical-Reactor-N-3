@@ -1,6 +1,5 @@
 function dy=Traject(t,y)
-global cUp cD k b y_0 y_End lambda
+global y_0 y_End k b alpha betta
 dy=zeros(1,1);
-yD=k*y+b+cD*(y-y_0(1))*(y_End(1)-y);
-yUp=k*y+b+cUp*(y-y_0(1))*(y_End(1)-y);
-dy=(lambda/yD+(1-lambda)/yUp)^(-1);
+
+dy(1)=k*y+b+alpha*(y-y_0(1))*(y-y_End(1))+betta*(y-y_0(1))^2*(y-y_End(1));

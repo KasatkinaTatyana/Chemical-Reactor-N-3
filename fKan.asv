@@ -1,0 +1,8 @@
+function F=fKan(y)
+% y=[y y' y'']
+T=InvStateDiff(y);
+
+
+
+F=y(3) + 2*(-y(2)) * y(3)*k2(T)/k1(T)/y(1)^2 - ...
+  2*y(1)*y(2)*k2(T)/k1(T)*y(2)^2/y(1)^4;

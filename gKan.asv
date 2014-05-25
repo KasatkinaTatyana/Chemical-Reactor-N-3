@@ -1,0 +1,6 @@
+function F=gKan(y)
+global R E1 E2 A10 A20
+
+T=InvStateDiff(y);
+
+F=;

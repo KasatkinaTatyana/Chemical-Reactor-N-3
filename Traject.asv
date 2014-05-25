@@ -1,0 +1,4 @@
+function Traject(t,y)
+global c k b y_0 y
+dy=0;
+dy=-c*y^2+

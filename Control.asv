@@ -1,16 +1,10 @@
 %% function F=Control(y0) %управление u=u(y),y = cA - это стационарная система
-function F=Control(t)
-global y_0 y_End k b alpha betta t_0
+function F=Control(y_curr, t_curr, t_new)
+global y_0 y_End k b alpha betta
 %--------------------------------------------------------------------------
 N_t=1000;
 %--------------------------------------------------------------------------
-% y0=Euler(t, t/N_t);
-if (t == t_0)
-    y0=y_0(1);
-else
-    [T, Y] = ode45(@Traject,[t_0 t], y_0(1));
-    y0=Y(end);
-end
+y0=Euler(y_curr, t_curr, t_new, (t_new - t_curr)/N_t);
 
 y1=k*y0+b+alpha*(y0-y_0(1))*(y0-y_End(1))+betta*(y0-y_0(1))^2*(y0-y_End(1));
 
