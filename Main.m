@@ -143,10 +143,12 @@ y_tau=y_0; h_tau=0;
 for t=t_0:h_t:t_End
     y_r=YTrans(x_r(i,:));
     
+
     % U=Control(y_tau(1), tau - h_tau, tau);  %Это вариант дает меньшую
     % точность, чем используемый ниже
     
     U=Control(tau);
+
     % u1(i)=U(1,1);
     % v=U(1,1);
     y_tau=U(4:6,1);
@@ -156,6 +158,12 @@ for t=t_0:h_t:t_End
     
     v=(-f_r+U(7,1) - 3*c*(y_r(3) - y_tau(3)) - 3*c^2*(y_r(2) - y_tau(2)) - c^3*(y_r(1) - y_tau(1)))/g_r;
     % u2(i)=v;
+
+    
+    T=InvStateDiff(y_tau);
+    % h_tau = h_t / s([y_tau(1) -y_tau(2) T]);
+    h_tau = h_t / s(x_r(i,:));
+
     
     x_r(i+1,1)=x_r(i,1)+(-k1(x_r(i,3))*x_r(i,1)^2)*h_t;
     x_r(i+1,2)=x_r(i,2)+( k1(x_r(i,3))*x_r(i,1)^2 - k2(x_r(i,3))*x_r(i,2) )*h_t;

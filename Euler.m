@@ -1,3 +1,4 @@
+
 function F=Euler(t, h_t)
 % h_t - шаг интегрирования
 global y_0 y_End k b alpha betta t_0
